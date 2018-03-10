@@ -1,0 +1,263 @@
+@import 'imports/_config';
+@import 'imports/_functions';
+@import 'imports/_debug';
+
+// To use on `<html>`.
+///
+/// Outputs `font-size` and `line-height`.
+///
+/// @param {number} $font-size [$nls-base-font-size] - Root font size
+///
+/// @example scss
+/// html {
+///     @include nls-html(16);
+/// }
+///
+/// @example css
+/// html {
+///     font-size: 16px;
+///     line-height: 19px;
+/// }
+
+@mixin nls-html($font-size: $nls-base-font-size) {
+
+    // The variable to rule them all!
+    $nls-root-font-size: $font-size !global;
+
+    $line-height: round(($nls-root-font-size * $nls-base-line-height));
+
+    font-size: $nls-root-font-size * 1px;
+    line-height: $line-height * 1px;
+
+    @if($nls-debug-mode == true) {
+        @include nls-show-grid($line-height);
+    }
+
+    @if($nls-extras == true) {
+        @include nls-extras();
+    }
+}
+
+/// To use on `<body>`.
+///
+/// Outputs `font-size` and `line-height`.
+///
+/// @param {string} $unit [$nls-base-unit] - Unit to output (`px`, `em`, `rem`, `pxrem`)
+///
+/// @example scss
+/// body {
+/// 	@include nls-body("pxrem");
+/// }
+///
+/// @example css
+/// body {
+///     font-size: 16px;
+///     line-height: 19px;
+///     font-size: 1rem;
+///     line-height: 1.1875rem;
+/// }
+
+@mixin nls-body($unit: $nls-base-unit) {
+
+    $line-height: round(($nls-root-font-size * $nls-base-line-height));
+
+    @if ($unit == "px" or $unit == "pxrem") {
+        font-size: $nls-root-font-size * 1px;
+        line-height: $line-height * 1px;
+    }
+
+    @if ($unit == "rem" or $unit == "pxrem") {
+        font-size: nls-decimal-ceil(nls-rem-calc($nls-root-font-size, $nls-root-font-size), 5);
+        line-height: nls-decimal-ceil(nls-rem-calc($line-height, $nls-root-font-size), 5);
+    }
+
+    @if ($unit == "em") {
+        font-size: nls-decimal-ceil(nls-em-calc($nls-root-font-size, $nls-root-font-size), 5);
+        line-height: nls-decimal-ceil(nls-em-calc($line-height, $nls-root-font-size), 5);
+    }
+}
+
+/// To use on headings `<h1> - <h6>`.
+///
+/// Outputs `font-size`, `line-height`, `margin-bottom` and `margin-top`.
+///
+/// @param {number} $step -
+/// `<h1>` &rarr; `$step: 3`
+///
+/// `<h2>` &rarr; `$step: 2`
+///
+/// `<h3>` &rarr; `$step: 1`
+///
+/// `<h4>` &rarr; `$step: 0`
+///
+/// `<h5>` &rarr; `$step: 0`
+///
+/// `<h6>` &rarr; `$step: 0`
+///
+/// @param {string} $unit [$nls-base-unit] - Unit to output (`px`, `em`, `rem`, `pxrem`)
+///
+/// @param {number} $base-value [$nls-base-font-size] - Optional call with a different base font size when using em
+///
+/// @example scss
+/// h1 {
+/// 	@include nls-heading(3, "em");
+/// }
+///
+/// h2 {
+/// 	@include nls-heading(2, "px");
+/// }
+///
+/// h3 {
+/// 	@include nls-heading(1, "pxrem");
+/// }
+///
+/// h4 {
+/// 	@include nls-heading(0);
+/// }
+///
+/// @example css
+/// h1 {
+///     font-size: 4.25em;
+///     line-height: 1.11765em;
+///     margin-bottom: 0.55883em;
+///     margin-top: 0.27942em;
+/// }
+///
+/// h2 {
+///     font-size: 42px;
+///     line-height: 57px;
+///     margin-bottom: 19px;
+///     margin-top: 19px;
+/// }
+///
+/// h3 {
+///     font-size: 26px;
+///     line-height: 38px;
+///     margin-bottom: 0px;
+///     margin-top: 19px;
+///     font-size: 1.625rem;
+///     line-height: 2.375rem;
+///     margin-bottom: 0rem;
+///     margin-top: 1.1875rem;
+/// }
+///
+/// h4 {
+///     font-size: 16px;
+///     line-height: 19px;
+///     margin-bottom: 0px;
+///     margin-top: 19px;
+///     font-size: 1rem;
+///     line-height: 1.1875rem;
+///     margin-bottom: 0rem;
+///     margin-top: 1.1875rem;
+/// }
+
+@mixin nls-heading($step, $unit: $nls-base-unit, $base-value: $nls-root-font-size) {
+
+    $font-size: $nls-root-font-size;
+    $scale: $nls-scale-factor;
+    $computed-font-size: round($font-size * nls-exponent($scale, $step));
+    $line-height: round($font-size * $nls-base-line-height);
+    $lines: ceil($computed-font-size / $line-height);
+    $computed-line-height: $line-height * $lines;
+    $margin-bottom: $line-height;
+    $margin-top: $line-height;
+
+    @if ($step == 3) {
+        $margin-bottom: $line-height * 2;
+        $margin-top: $line-height;
+    }
+
+    @if ($step == 2) {
+        $margin-bottom: $line-height;
+        $margin-top: $line-height;
+    }
+
+    @if ($step <= 1) {
+        $margin-bottom: 0;
+        $margin-top: $line-height;
+    }
+
+    @if($nls-debug-mode == true) {
+        @include nls-show-margins($margin-bottom, $margin-top, $computed-font-size, $unit);
+    }
+
+    @if ($unit == "px" or $unit == "pxrem") {
+        font-size: $computed-font-size * 1px;
+        line-height: $computed-line-height * 1px;
+        margin-bottom: $margin-bottom * 1px;
+        margin-top: $margin-top * 1px;
+    }
+
+    @if ($unit == "rem" or $unit == "pxrem") {
+        font-size: nls-decimal-ceil(nls-rem-calc($computed-font-size, $base-value), 5);
+        line-height: nls-decimal-ceil(nls-rem-calc($computed-line-height, $base-value), 5);
+        margin-bottom: nls-decimal-ceil(nls-rem-calc($margin-bottom, $base-value), 5);
+        margin-top: nls-decimal-ceil(nls-rem-calc($margin-top, $base-value), 5);
+    }
+
+    @if ($unit == "em") {
+        font-size: nls-decimal-ceil(nls-em-calc($computed-font-size, $base-value), 5);
+        line-height: nls-decimal-ceil(nls-em-calc($computed-line-height, $computed-font-size), 5);
+        margin-bottom: nls-decimal-ceil(nls-em-calc($margin-bottom, $computed-font-size), 5);
+        margin-top: nls-decimal-ceil(nls-em-calc($margin-top, $computed-font-size), 5);
+    }
+}
+
+/// To use on `<p>`, `<ul>`, `<ol>`, `<pre>`, `<table>`, `<blockquote>`, etc.
+///
+/// Outputs `margin-bottom` and `margin-top`.
+///
+/// @param {string} $unit [$nls-base-unit] - Unit to output
+///
+/// @param {number} $base-value [$nls-base-font-size] - Optional call with a different base font size when using em
+///
+/// @example scss
+/// p,
+/// ul,
+/// ol,
+/// pre,
+/// table,
+/// blockquote {
+/// 	@include nls-margins();
+/// }
+///
+/// @example css
+/// p,
+/// ul,
+/// ol,
+/// pre,
+/// table,
+/// blockquote {
+///     position: relative;
+///     margin-bottom: 19px;
+///     margin-top: 0;
+///     margin-bottom: 1.1875rem;
+///     margin-top: 0;
+/// }
+
+@mixin nls-margins($unit: $nls-base-unit, $base-value: $nls-root-font-size) {
+
+    $margin: round($base-value * $nls-base-line-height);
+    $margin-bottom: $margin;
+    $margin-top: 0;
+
+    @if ($nls-debug-mode == true) {
+        @include nls-show-margins($margin-bottom, $margin-top, $base-value, $unit);
+    }
+
+    @if ($unit == "px" or $unit == "pxrem") {
+        margin-bottom: $margin * 1px;
+        margin-top: $margin-top;
+    }
+
+    @if ($unit == "rem" or $unit == "pxrem") {
+        margin-bottom: nls-decimal-ceil(nls-rem-calc($margin, $base-value), 5);
+        margin-top: $margin-top;
+    }
+
+    @if ($unit == "em") {
+        margin-bottom: nls-decimal-ceil(nls-em-calc($margin, $base-value), 5);
+        margin-top: $margin-top;
+    }
+}
