@@ -26,7 +26,7 @@ export default {
   }
   @import './scss/index.scss';
   html {
-    @include nls-html(16);
+    @include nls-html(21);
   }
   body{
     @include nls-body("rem");
