@@ -1,20 +1,26 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <button v-on:click="basic = !basic" type="button">Hide text</button>
     <HelloWorld/>
-    <TextContent/>
+    <BasicText v-if="basic"></BasicText>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld'
-import TextContent from './components/TextContent'
+import BasicText from './components/BasicText'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    TextContent
+    BasicText
+  },
+  data () {
+    return {
+      basic: true,
+      forms: false
+    }
   }
 }
 </script>

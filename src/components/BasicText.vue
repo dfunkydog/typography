@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'TextContent',
+  name: 'BasicText',
   data () {
     return {
       msg: 'Initial simple content'

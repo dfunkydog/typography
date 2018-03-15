@@ -2,6 +2,7 @@
 @import 'variables';
 @import 'imports/_functions';
 @import 'imports/_debug';
+@import 'imports/_mini-reset';
 // To use on `<html>`.
 ///
 /// Outputs `font-size` and `line-height`.
@@ -33,8 +34,8 @@
         @include nls-show-grid($line-height);
     }
 
-    @if($nls-extras == true) {
-        @include nls-extras();
+    @if($nls-reset == true) {
+        @include nls-reset();
     }
 }
 

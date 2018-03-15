@@ -1,5 +1,6 @@
 $GOLDEN_SECTION: 1.618;
-
+$FITH: 1.5;
+$MAJOR_SEVENTH: 1.875;
 // Default font size.
 // Don't change it ever!
 $NLS_DEFAULT_FONT_SIZE: 16;
@@ -33,71 +34,9 @@ $nls-scale-factor: $GOLDEN_SECTION !default;
 ///
 /// Outputs background lines imitating a notebook's sheet.
 ///
-/// Declare it in your own `_variables.scss`, `_config.scss` or the like.
-///
-/// Basically, **it must be declared before the** `@import "sassy-gridlover"`.
-///
-/// @example scss
-/// nls-debug-mode: true;
-///
-/// @example css
-/// html {
-///     background-image: linear-gradient(rgba(0, 170, 255, 0.3) 1px, transparent 1px);
-///     background-position: left top;
-///     background-size: 19px 19px;
-/// }
-///
-/// html body {
-///     box-shadow: 1px 0px 0px rgba(0, 170, 255, 0.3), -1px 0px 0px rgba(0, 170, 255, 0.3);
-/// }
-///
 /// @type boolean
 $nls-debug-mode: false !default;
 
-/// Styles to make sure everything is aligned.
-///
-/// Outputs extra **reset styles**.
-///
-/// Declare it in your own `_variables.scss`, `_config.scss` or the like.
-///
-/// Basically, **it must be declared before the** `@import "sassy-gridlover"`.
-///
-/// @example scss
-/// $nls-extras: true;
-///
-/// @example css
-/// html ul ul,
-/// html ol ol,
-/// html ul ol,
-/// html ol ul {
-///   margin-bottom: 0;
-///   margin-top: 0;
-/// }
-/// html hr,
-/// html .hr {
-///   border: 1px solid;
-///   margin: -1px 0;
-/// }
-/// html a,
-/// html b,
-/// html i,
-/// html strong,
-/// html em,
-/// html small,
-/// html code {
-///   line-height: 0;
-/// }
-/// html sub,
-/// html sup {
-///   line-height: 0;
-///   position: relative;
-///   vertical-align: baseline;
-/// }
-/// html sup {
-///   top: -0.5em;
-/// }
-/// html sub {
-///   bottom: -0.25em;
-/// }
+
 /// @type boolean
-$nls-extras: false !default;
+$nls-reset: false !default;
